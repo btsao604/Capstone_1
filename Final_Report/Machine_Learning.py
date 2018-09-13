@@ -4,7 +4,6 @@ Created on Sun Aug 26 14:19:42 2018
 
 @author: boris-tsao
 """
-import math
 import pandas as pd
 import numpy as np
 from nba_py.player import PlayerSummary
@@ -15,7 +14,7 @@ test_set = '2017-18'
 
 df = pd.DataFrame()
 for year in seasons:
-    temp_df = pd.read_csv("./raw_data/eda_data"+year+".csv")
+    temp_df = pd.read_csv("../raw_data/eda_data"+year+".csv")
     df = pd.concat([df, temp_df])
 df= df.drop(['FT_PCT'], axis=1)
 df = df.dropna(thresh=3)
@@ -42,7 +41,7 @@ training_set['PLAYER_ID'] = training_set['PLAYER_ID'].apply(int)
 second_set = pd.merge(player_games, training_set, left_on=['PLAYER_ID', 'GAME_ID'], right_on=['PLAYER_ID','GAME_ID'])
 final_set = second_set.drop(['PLAYER_ID', 'GAME_ID'], axis=1)
 evaluate = pd.get_dummies(final_set, drop_first=True)
-evaluate = evaluate.drop(['GAME_NUMBER'], axis=1)
+evaluate = pd.get_dummies(evaluate, columns=['GAME_ID'], drop_first=True)
 
 evaluate = evaluate.dropna()
 
